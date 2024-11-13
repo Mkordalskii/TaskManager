@@ -1,8 +1,10 @@
-package model;
+package com.example.taskmanager.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity //annotation tells that class will be as mapped as label, and every obj of this class will be a row in the label
 public class Task {
@@ -10,6 +12,7 @@ public class Task {
     @GeneratedValue(strategy=GenerationType.IDENTITY) //automatically generates field value(1,2,3...)
     private Long id; //Uniqe task ID
 
+    @NotBlank(message = "Name cannot be blank")
     private String name; //Task name
     private String description; //Task description
     private boolean completed; //Is task completed or not
