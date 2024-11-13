@@ -4,6 +4,7 @@ import com.example.taskmanager.model.Task;
 import com.example.taskmanager.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TaskController
         return taskRepository.findAll();
     }
     @PostMapping //The method supports POST requests.
-    public Task addTask(@RequestBody Task task) //Data sent in the request is automatically mapped to a Task object thanks to @RequestBody.
+    public Task addTask(@Valid @RequestBody Task task) //Data sent in the request is automatically mapped to a Task object thanks to @RequestBody.
     {
         return taskRepository.save(task);
     }
@@ -33,7 +34,7 @@ public class TaskController
         return taskRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Task with id " +id+ "not found"));
     }
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task updateTask)
+    public Task updateTask(@PathVariable Long id,@Valid @RequestBody Task updateTask)
     {
         return taskRepository.findById(id)
                 .map(task ->{

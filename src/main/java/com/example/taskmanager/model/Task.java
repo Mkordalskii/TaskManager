@@ -13,7 +13,9 @@ public class Task {
     private Long id; //Uniqe task ID
 
     @NotBlank(message = "Name cannot be blank")
+    @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name; //Task name
+    @Size(max = 250, message = "Description cannot exceed 250 characters")
     private String description; //Task description
     private boolean completed; //Is task completed or not
 
