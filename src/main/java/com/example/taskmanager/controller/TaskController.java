@@ -5,6 +5,10 @@ import com.example.taskmanager.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -52,6 +56,15 @@ public class TaskController
             throw new IllegalArgumentException("Task with id " +id+ "not found");
         }
         taskRepository.deleteById(id);
+    }
+    @GetMapping("/filter")
+    public Page<Task> getTasksWithFiler(
+            @RequestParam(required = false, defaultValue = "false") boolean completed,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size)
+    {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findByCompleted(completed, pageable);
     }
 }
 
