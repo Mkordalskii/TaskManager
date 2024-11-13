@@ -58,7 +58,7 @@ public class TaskController
         taskRepository.deleteById(id);
     }
     @GetMapping("/filter")
-    public Page<Task> getTasksWithFiler(
+    public Page<Task> getTasksWithFilter(
             @RequestParam(required = false, defaultValue = "false") boolean completed,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size)
