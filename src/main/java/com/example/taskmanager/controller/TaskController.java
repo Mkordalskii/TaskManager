@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -22,12 +23,15 @@ public class TaskController
     {
         this.taskRepository = taskRepository;
     }
+
     @GetMapping //The method supports GET requests.
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<Task> getTasks()
     {
         return taskRepository.findAll();
     }
     @PostMapping //The method supports POST requests.
+    @PreAuthorize("hasRole('ADMIN')")
     public Task addTask(@Valid @RequestBody Task task) //Data sent in the request is automatically mapped to a Task object thanks to @RequestBody.
     {
         return taskRepository.save(task);
@@ -38,6 +42,7 @@ public class TaskController
         return taskRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Task with id " +id+ "not found"));
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Task updateTask(@PathVariable Long id,@Valid @RequestBody Task updateTask)
     {
         return taskRepository.findById(id)
@@ -49,6 +54,7 @@ public class TaskController
                 }).orElseThrow(() -> new IllegalArgumentException("Task with id " +id+ "not found"));
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteTask(@PathVariable Long id)
     {
         if (!taskRepository.existsById(id))
