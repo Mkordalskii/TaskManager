@@ -10,25 +10,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 @Configuration
 public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable()) // Wyłączamy CSRF na potrzeby testów
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()) // Wyłączamy ochronę ramek dla H2
-                )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**").permitAll() // H2 Console dostępne bez uwierzytelnienia
-                        .anyRequest().authenticated() // Wszystkie inne endpointy wymagają autoryzacji
-                )
-                .formLogin(Customizer.withDefaults()) // Domyślna konfiguracja logowania formularzowego
-                .httpBasic(Customizer.withDefaults()) // Domyślna konfiguracja Basic Auth
-                .build();
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,5 +34,19 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryUserDetailsManager(user, admin);
+    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationEntryPoint authEntryPoint) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authEntryPoint))
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
 }
