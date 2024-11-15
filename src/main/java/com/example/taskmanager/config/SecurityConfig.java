@@ -15,21 +15,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Wyłączenie CSRF dla testów
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // H2 Console
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/**", "/register").permitAll() // Endpointy publiczne
-                        .anyRequest().authenticated() // Wszystkie inne endpointy wymagają logowania
+                        .requestMatchers("/h2-console/**", "/register").permitAll()
+                        .requestMatchers("/tasks/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
-                .formLogin(form -> form.defaultSuccessUrl("/tasks", true)) // Logowanie formularzowe z przekierowaniem
-                .httpBasic(httpBasic -> {}); // Uwierzytelnianie Basic Auth
+                .formLogin(form -> form.defaultSuccessUrl("/tasks", true))
+                .httpBasic(httpBasic -> {});
 
-        return http.build(); // Prawidłowe wywołanie .build() jako ostatni krok
+        return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Kodowanie hasła
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
