@@ -1,6 +1,5 @@
 package com.example.taskmanager.config;
 
-import com.example.taskmanager.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +22,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // Wszystkie inne endpointy wymagają logowania
                 )
                 .formLogin(form -> form.defaultSuccessUrl("/tasks", true)) // Logowanie formularzowe z przekierowaniem
-                .httpBasic(httpBasic -> {}) // Uwierzytelnianie Basic Auth
-                .build();
+                .httpBasic(httpBasic -> {}); // Uwierzytelnianie Basic Auth
 
-        return http.build();
+        return http.build(); // Prawidłowe wywołanie .build() jako ostatni krok
     }
 
     @Bean
