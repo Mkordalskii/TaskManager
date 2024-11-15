@@ -16,10 +16,12 @@ public class AuthController
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<String> registerUser(@Valid @RequestBody User user)
-    {
-        user.setRole("ROLE_USER"); //Every user get default role USER
-        userService.saveUser(user);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
+        try {
+            userService.saveUser(user);
+            return ResponseEntity.ok("User registered successfully");
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }
