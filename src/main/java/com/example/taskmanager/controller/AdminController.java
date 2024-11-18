@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController // Indicates that this class handles HTTP requests.
-@RequestMapping("/admin") // All endpoints in this class will start with "/admin".
+@RequestMapping("/admin") // All endpoints in this class will start with /admin.
 public class AdminController {
 
     /**

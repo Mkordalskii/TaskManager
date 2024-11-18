@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController // Indicates that this class handles HTTP requests.
-@RequestMapping("/tasks") // All endpoints in this class will start with "/tasks".
+@RequestMapping("/tasks") // All endpoints in this class will start with /tasks.
 public class TaskController {
 
     private final TaskRepository taskRepository;
@@ -40,10 +40,10 @@ public class TaskController {
      * @return The created task with status 201 Created.
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')") // Restricts access to users with the 'ADMIN' role.
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
         Task savedTask = taskRepository.save(task);
-        return ResponseEntity.status(201).body(savedTask); // 201 Created
+        return ResponseEntity.status(201).body(savedTask);
     }
 
     /**
@@ -55,7 +55,7 @@ public class TaskController {
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return taskRepository.findById(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build()); // 404 Not Found
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -66,7 +66,7 @@ public class TaskController {
      * @return The updated task or 404 Not Found if the task doesn't exist.
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Restricts access to users with the 'ADMIN' role.
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @Valid @RequestBody Task updateTask) {
         return taskRepository.findById(id)
                 .map(task -> {
@@ -75,7 +75,7 @@ public class TaskController {
                     task.setCompleted(updateTask.isCompleted());
                     return ResponseEntity.ok(taskRepository.save(task));
                 })
-                .orElse(ResponseEntity.notFound().build()); // 404 Not Found
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -85,13 +85,13 @@ public class TaskController {
      * @return 204 No Content if successful or 404 Not Found if the task doesn't exist.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Restricts access to users with the 'ADMIN' role.
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         if (!taskRepository.existsById(id)) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
+            return ResponseEntity.notFound().build();
         }
         taskRepository.deleteById(id);
-        return ResponseEntity.noContent().build(); // 204 No Content
+        return ResponseEntity.noContent().build();
     }
 
     /**

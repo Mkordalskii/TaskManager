@@ -2,22 +2,22 @@ package com.example.taskmanager.model;
 
 import jakarta.persistence.*;
 
-@Entity // Indicates that this class is a JPA entity.
-@Table(name = "tasks") // Maps this class to the "tasks" table in the database.
+@Entity // Indicates this class is a JPA entity mapped to a database table.
+@Table(name = "tasks") // Specifies the name of the database table.
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates the primary key value.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates unique IDs for each task.
     private Long id;
 
-    private String name;
-    private String description;
-    private boolean completed;
+    private String name; // The name of the task.
+    private String description; // A brief description of the task.
+    private boolean completed; // Indicates whether the task is completed.
 
-    // Default constructor (required by JPA).
+    // Default constructor required by JPA.
     public Task() {}
 
-    // Getters and setters for all fields.
+    // Getters and setters for the fields.
     public Long getId() {
         return id;
     }

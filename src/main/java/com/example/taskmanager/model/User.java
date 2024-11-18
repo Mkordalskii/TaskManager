@@ -1,32 +1,23 @@
 package com.example.taskmanager.model;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name ="users") //tabela w bazie danych
-public class User
-{
+import jakarta.persistence.*;
+
+@Entity // Indicates this class is a JPA entity mapped to a database table.
+@Table(name = "users") // Specifies the name of the database table.
+public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates unique IDs for each user.
     private Long id;
 
-    @NotBlank(message = "Username cannot be blank")
-    @Column(unique = true, nullable = false)
-    private String username;
+    private String username; // The username of the user.
+    private String password; // The encoded password of the user.
+    private String role; // The role of the user (e.g., ROLE_USER, ROLE_ADMIN).
 
-    @NotBlank(message = "Password cannot be blank")
-    @Column(nullable = false)
-    private String password;
+    // Default constructor required by JPA.
+    public User() {}
 
-    private String role;//ROLE_USER lub ROLE_ADMIN
-
-    public User(){}
-    public User(String username, String password, String role)
-    {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
+    // Getters and setters for the fields.
     public Long getId() {
         return id;
     }
