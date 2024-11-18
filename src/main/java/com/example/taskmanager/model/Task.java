@@ -1,63 +1,52 @@
 package com.example.taskmanager.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-@Entity //annotation tells that class will be as mapped as label, and every obj of this class will be a row in the label
+import jakarta.persistence.*;
+
+@Entity // Indicates that this class is a JPA entity.
+@Table(name = "tasks") // Maps this class to the "tasks" table in the database.
 public class Task {
-    @Id//tells that attribute id is a primary key of label
-    @GeneratedValue(strategy=GenerationType.IDENTITY) //automatically generates field value(1,2,3...)
-    private Long id; //Uniqe task ID
 
-    @NotBlank(message = "Name cannot be blank")
-    @Size(max = 100, message = "Name cannot exceed 100 characters")
-    private String name; //Task name
-    @Size(max = 250, message = "Description cannot exceed 250 characters")
-    private String description; //Task description
-    private boolean completed; //Is task completed or not
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates the primary key value.
+    private Long id;
 
-    //constructors (default and with parameters)
-    public Task() {} //default constructor required by JPA(Java Persistence API Hibernate)
-    public Task(String name, String description,boolean completed)
-    {
-        this.name = name;
-        this.description = description;
-        this.completed = completed;
-    }
-    //Getters and setters
-    public Long getId()
-    {
+    private String name;
+    private String description;
+    private boolean completed;
+
+    // Default constructor (required by JPA).
+    public Task() {}
+
+    // Getters and setters for all fields.
+    public Long getId() {
         return id;
     }
-    public void setId(Long id)
-    {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
-    public void setName(String name)
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
-    public String getDescription()
-    {
+
+    public String getDescription() {
         return description;
     }
-    public void setDescription(String description)
-    {
+
+    public void setDescription(String description) {
         this.description = description;
     }
-    public boolean isCompleted()
-    {
+
+    public boolean isCompleted() {
         return completed;
     }
-    public void setCompleted(boolean completed)
-    {
+
+    public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 }
